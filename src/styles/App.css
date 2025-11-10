@@ -1,0 +1,427 @@
+.app-header {
+  text-align: center;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Layout: list on the left, details on the right */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; /* left column slightly smaller */
+  gap: 2rem;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.right-panel {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.placeholder-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+  font-style: italic;
+}
+
+/* --- Styles for EmployeeList --- */
+.employee-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.employee-list-item {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.employee-list-item:hover {
+  background-color: #fafafa;
+}
+
+.employee-list-item.selected {
+  background-color: #e0f0ff;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.employee-list-item.inactive {
+  opacity: 0.5;
+  background-color: #f9f9f9;
+}
+
+.employee-info {
+  font-weight: bold;
+}
+.employee-info span {
+  font-weight: normal;
+  color: #555;
+  font-size: 0.9em;
+}
+
+.employee-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* --- Styles for EmployeeForm --- */
+.employee-form h3 {
+  margin-top: 0;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box; /* Important pour que le padding n'ajoute pas à la largeur */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* --- Boutons --- */
+button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-new-employee {
+  width: 100%;
+}
+
+/* Separator between sections in the right column */
+.section-divider {
+  border: none;
+  border-top: 2px solid #f0f0f0;
+  margin: 2rem 0;
+}
+
+/* Container for forms to standardize border/padding */
+.form-container {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Styles for left column when no employee is selected */
+.left-panel .form-container {
+  background-color: #fdfdfd;
+}
+
+/* Styles for schedule management */
+.shift-manager h3 {
+  margin-top: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.shift-manager .form-container {
+  background-color: #fdfdfd;
+  margin-bottom: 1.5rem;
+}
+
+/* Styles for the shift list */
+.shift-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.shift-list-item {
+  background-color: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shift-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* --- Styles pour ScheduleCalendar --- */
+
+.schedule-calendar h3 {
+  margin-top: 0;
+}
+
+.week-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.week-navigation span {
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 days */
+  gap: 10px;
+}
+
+.day-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: 150px; /* minimum height per day */
+}
+
+.day-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.day-header small {
+  color: #777;
+  font-size: 0.8em;
+  display: block;
+}
+
+.status-badge {
+  padding: 5px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+  margin-bottom: 10px;
+  font-size: 0.9em;
+}
+/* Couleurs par statut */
+.status-on_site { background-color: #007bff; }
+.status-on_call { background-color: #dc3545; }
+.status-off { background-color: #6c757d; }
+
+.day-actions {
+  margin-top: auto; /* push buttons to the bottom */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.btn-status {
+  width: 100%;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  color: #333;
+  padding: 6px;
+  font-size: 0.85em;
+  cursor: pointer;
+  border-radius: 4px;
+  opacity: 0.7; /* Non-sélectionné */
+}
+.btn-status:hover {
+  opacity: 1;
+  border-color: #999;
+}
+
+/* Statut 'active' (sélectionné) */
+.btn-status.active {
+  opacity: 1;
+  font-weight: bold;
+}
+.btn-status.on_site.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+.btn-status.on_call.active {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+.btn-status.off.active {
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+/* Styles for the list of shifts in a day */
+.day-shifts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 100px; /* provides space even if empty */
+  margin-bottom: 10px;
+}
+
+/* Badge for a shift (Day, On-call, etc.) */
+.shift-badge {
+  position: relative;
+  padding: 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  color: white;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.shift-badge:hover {
+  transform: scale(1.03);
+}
+
+.shift-type {
+  display: block;
+  font-weight: bold;
+}
+.shift-time {
+  font-size: 0.9em;
+  font-weight: normal;
+  opacity: 0.9;
+}
+
+/* Couleurs par type de créneau */
+.status-day_shift { background-color: #007bff; }
+.status-on_call { background-color: #dc3545; }
+.status-post_call_rest { background-color: #28a745; }
+.status-off { 
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: 1px dashed #ccc;
+  text-align: center;
+}
+
+/* Add-shift button */
+.add-shift-btn {
+  margin-top: auto; /* pushes the button to the bottom */
+  width: 100%;
+  padding: 6px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.add-shift-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Small 'X' delete button */
+.delete-shift-btn {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.delete-shift-btn:hover {
+  opacity: 1;
+}
+
+
+/* --- Styles for the Modal (Form) --- */
+.modal-overlay {
+  position: fixed; /* covers the entire page */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-content .form-group {
+  margin-bottom: 1rem;
+}
+.modal-content .form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.modal-content .form-group input,
+.modal-content .form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}

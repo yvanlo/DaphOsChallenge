@@ -32,6 +32,7 @@ export function useEmployeeStore() {
       ...employeeData, // { name, role }
     };
     setEmployees(currentEmployees => [...currentEmployees, newEmployee]);
+    return newEmployee;
   };
 
   // Update an employee
@@ -52,5 +53,19 @@ export function useEmployeeStore() {
     );
   };
 
-  return { employees, addEmployee, updateEmployee, deactivateEmployee };
+  // Reactivate an employee
+  const reactivateEmployee = (id) => {
+    setEmployees(currentEmployees =>
+      currentEmployees.map(emp =>
+        emp.id === id ? { ...emp, status: 'active' } : emp
+      )
+    );
+  };
+
+  // Permanently remove an employee
+  const removeEmployee = (id) => {
+    setEmployees(currentEmployees => currentEmployees.filter(emp => emp.id !== id));
+  };
+
+  return { employees, addEmployee, updateEmployee, deactivateEmployee, reactivateEmployee, removeEmployee };
 }

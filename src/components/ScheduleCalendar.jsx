@@ -39,6 +39,18 @@ export function ScheduleCalendar({ employeeId }) {
     return <span className="status-badge status-off">Off</span>;
   };
 
+  // Format shift times; if end is earlier or equal to start we mark it as next day
+  const formatShiftTime = (shift) => {
+    if (!shift.start || !shift.end) return '';
+    const s = shift.start;
+    const e = shift.end;
+    // simple lexical compare on HH:MM works for formatting; detect overnight
+    if (e <= s) {
+      return `${s} - ${e} (next day)`;
+    }
+    return `${s} - ${e}`;
+  };
+
   return (
     <div className="schedule-calendar">
   <h3>Default schedule</h3>
@@ -66,7 +78,7 @@ export function ScheduleCalendar({ employeeId }) {
                     
                     {/* don't show times for rest shifts */}
                     {shift.type !== 'POST_CALL_REST' && (
-                      <span className="shift-time">{shift.start} - {shift.end}</span>
+                      <span className="shift-time">{formatShiftTime(shift)}</span>
                     )}
                     
                     <button 
@@ -96,6 +108,7 @@ export function ScheduleCalendar({ employeeId }) {
           initialData={editingShift}
           onSubmit={handleFormSubmit}
           onCancel={() => setEditingShift(null)}
+          dayHasPostCallRest={editingShift.dayIndex !== undefined && weekSchedule[editingShift.dayIndex]?.some(s => s.type === 'POST_CALL_REST')}
         />
       )}
     </div>

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { SHIFT_TYPES, DEFAULT_HOURS } from '../hooks/useScheduleStore';
 
-export function ScheduleForm({ initialData, onSubmit, onCancel }) {
+export function ScheduleForm({ initialData, onSubmit, onCancel, dayHasPostCallRest }) {
+  
+  // Initialize with MEETING if day has post-call rest, otherwise DAY_SHIFT
+  const initialType = dayHasPostCallRest ? 'MEETING' : 'DAY_SHIFT';
   
   const [formData, setFormData] = useState({
-    type: 'DAY_SHIFT',
-    start: DEFAULT_HOURS.DAY_SHIFT.start,
-    end: DEFAULT_HOURS.DAY_SHIFT.end,
+    type: initialType,
+    start: DEFAULT_HOURS[initialType].start,
+    end: DEFAULT_HOURS[initialType].end,
   });
 
   const isEditing = Boolean(initialData && initialData.id);
@@ -19,9 +22,15 @@ export function ScheduleForm({ initialData, onSubmit, onCancel }) {
         start: initialData.start,
         end: initialData.end,
       });
+    } else if (dayHasPostCallRest) {
+      // Create mode with post-call rest: force MEETING type
+      setFormData({
+        type: 'MEETING',
+        start: DEFAULT_HOURS.MEETING.start,
+        end: DEFAULT_HOURS.MEETING.end,
+      });
     }
-    // (create mode is handled by the initial state)
-  }, [initialData, isEditing]);
+  }, [initialData, isEditing, dayHasPostCallRest]);
 
   // Update form when shift type changes
   const handleTypeChange = (e) => {
@@ -43,8 +52,18 @@ export function ScheduleForm({ initialData, onSubmit, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // If the day has a post-call rest, only meetings are allowed
+    if (dayHasPostCallRest && formData.type !== 'MEETING') {
+      alert('Only meetings are allowed on days with post-call rest');
+      return;
+    }
     onSubmit(formData); // sends { type, start, end }
   };
+
+  // Filter shift types: if day has POST_CALL_REST, only allow MEETING
+  const availableTypes = dayHasPostCallRest
+    ? { MEETING: SHIFT_TYPES.MEETING }
+    : SHIFT_TYPES;
 
   return (
     <div className="modal-overlay" onClick={onCancel}>
@@ -52,10 +71,16 @@ export function ScheduleForm({ initialData, onSubmit, onCancel }) {
         <form onSubmit={handleSubmit}>
           <h3>{isEditing ? 'Edit shift' : 'Add shift'}</h3>
           
+          {dayHasPostCallRest && (
+            <div style={{ background: '#fef3c7', padding: '10px', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem', color: '#92400e' }}>
+              ⚠️ Post-call rest on this day — only meetings allowed
+            </div>
+          )}
+          
           <div className="form-group">
             <label htmlFor="type">Shift type</label>
             <select name="type" id="type" value={formData.type} onChange={handleTypeChange}>
-              {Object.entries(SHIFT_TYPES).map(([key, label]) => (
+              {Object.entries(availableTypes).map(([key, label]) => (
                 <option key={key} value={key}>{label}</option>
               ))}
             </select>

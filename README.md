@@ -1,16 +1,108 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# DaphOS — Staff Scheduler
 
-Currently, two official plugins are available:
+A small React + Vite app for managing staff and weekly shift schedules. The UI is intentionally minimal so you can run it locally, inspect the schedule logic, and extend it for your needs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This README explains how to set up the project, run it in development, build for production, and run basic checks (lint).
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js (LTS) installed — Node 16+ is sufficient. Use nvm if you need to switch versions:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# example using nvm
+nvm install --lts
+nvm use --lts
+```
+
+- npm (bundled with Node) — work from a terminal using your default shell (zsh on macOS in this repo).
+
+## Install
+
+Clone the repository (if not already) and install dependencies:
+
+```bash
+git clone <repo-url>
+cd daphos-challenge
+npm install
+```
+
+Replace `<repo-url>` with your repository URL if you cloned from elsewhere.
+
+## Available scripts
+
+The project uses Vite. The most common commands are provided in `package.json`:
+
+- `npm run dev` — start the development server (hot reload)
+- `npm run build` — build a production bundle into `dist/`
+- `npm run preview` — locally serve the production build (after `npm run build`)
+- `npm run lint` — run ESLint across the source files
+
+Example usage:
+
+```bash
+# start dev server
+npm run dev
+
+# build for production
+npm run build
+
+# preview the production build
+npm run preview
+
+# run linter
+npm run lint
+```
+
+When the dev server runs, Vite will print the local URL (usually http://localhost:5173) where you can open the app.
+
+## Project layout (short)
+
+- `index.html` — app root
+- `src/` — source code
+	- `main.jsx`, `App.jsx` — app entry and top-level layout
+	- `components/` — React components (EmployeeForm, EmployeeList, ScheduleCalendar, ScheduleForm)
+	- `hooks/` — small local hooks for state management (`useEmployeeStore.js`, `useScheduleStore.js`)
+	- `styles/` — CSS files
+- `public/` — static assets
+
+The code stores data locally in `localStorage` for both employees and shifts — there is no backend required to run the app locally.
+
+## Notes about the code
+
+- The schedule logic lives in `src/hooks/useScheduleStore.js`. It implements a small business rule: when an `ON_CALL` shift is added, the next day's `DAY_SHIFT` (if any) is converted into a `POST_CALL_REST` (or one is created if none exists). Deleting an `ON_CALL` will revert that `POST_CALL_REST` back to a default `DAY_SHIFT` where applicable.
+
+- Visible UI text and internal comments have been converted to concise English to make the code easier to read and maintain.
+
+## Linting
+
+This project includes a basic ESLint setup. Run:
+
+```bash
+npm run lint
+```
+
+Fixes may be manual. If you'd like, I can run ESLint and apply automatic fixes where safe.
+
+## Build & Deployment
+
+For a simple static deployment (Netlify, Vercel, GitHub Pages with an adapter, etc.), run:
+
+```bash
+npm run build
+```
+
+Then upload the contents of the `dist/` directory to your static host. If you want a server preview locally, use:
+
+```bash
+npm run preview
+```
+
+## Development tips
+
+- The app persists data in `localStorage`. To reset sample data while developing, clear the site data from your browser or open the devtools and remove the keys used by the app.
+
+- The UI is intentionally small and easy to modify. If you add new features that change the data shape (for example, additional shift properties), consider adding tests for `useScheduleStore` to protect the business rules.
+

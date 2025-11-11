@@ -35,7 +35,7 @@ export function ScheduleCalendar({ employeeId }) {
   };
   
   // Return an 'Off' badge for empty days
-  const renderEmptyDay = (dayIndex) => {
+  const renderEmptyDay = () => {
     return <span className="status-badge status-off">Off</span>;
   };
 
@@ -83,7 +83,7 @@ export function ScheduleCalendar({ employeeId }) {
                     
                     <button 
                       className="delete-shift-btn"
-                      onClick={(e) => handleDelete(e, shift.id)}
+                      onClick={(deleteEvent) => handleDelete(deleteEvent, shift.id)}
                     >
                       &times;
                     </button>

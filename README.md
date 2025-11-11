@@ -1,108 +1,62 @@
 
 # DaphOS — Staff Scheduler
 
-A small React + Vite app for managing staff and weekly shift schedules. The UI is intentionally minimal so you can run it locally, inspect the schedule logic, and extend it for your needs.
+A React app for managing hospital staff schedules. Add employees, assign shifts, and track weekly schedules. Built for the DaphOS coding challenge.
 
-This README explains how to set up the project, run it in development, build for production, and run basic checks (lint).
+## Quick Start
 
----
-
-## Prerequisites
-
-- Node.js (LTS) installed — Node 16+ is sufficient. Use nvm if you need to switch versions:
+Make sure you have Node.js installed, then:
 
 ```bash
-# example using nvm
-nvm install --lts
-nvm use --lts
-```
-
-- npm (bundled with Node) — work from a terminal using your default shell (zsh on macOS in this repo).
-
-## Install
-
-Clone the repository (if not already) and install dependencies:
-
-```bash
-git clone <repo-url>
+# Clone and setup
+git clone https://github.com/yvanlo/DaphOsChallenge
 cd daphos-challenge
 npm install
-```
 
-Replace `<repo-url>` with your repository URL if you cloned from elsewhere.
-
-## Available scripts
-
-The project uses Vite. The most common commands are provided in `package.json`:
-
-- `npm run dev` — start the development server (hot reload)
-- `npm run build` — build a production bundle into `dist/`
-- `npm run preview` — locally serve the production build (after `npm run build`)
-- `npm run lint` — run ESLint across the source files
-
-Example usage:
-
-```bash
-# start dev server
+# Start development server
 npm run dev
-
-# build for production
-npm run build
-
-# preview the production build
-npm run preview
-
-# run linter
-npm run lint
 ```
 
-When the dev server runs, Vite will print the local URL (usually http://localhost:5173) where you can open the app.
+Open http://localhost:5173 to view the app.
 
-## Project layout (short)
+## What's Inside
 
-- `index.html` — app root
-- `src/` — source code
-	- `main.jsx`, `App.jsx` — app entry and top-level layout
-	- `components/` — React components (EmployeeForm, EmployeeList, ScheduleCalendar, ScheduleForm)
-	- `hooks/` — small local hooks for state management (`useEmployeeStore.js`, `useScheduleStore.js`)
-	- `styles/` — CSS files
-- `public/` — static assets
+- **Employees**: Add and manage staff members
+- **Shifts**: Assign work schedules with different shift types
+- **Local Storage**: Data saves automatically in your browser
+- **Clean UI**: Simple interface built with React and CSS
 
-The code stores data locally in `localStorage` for both employees and shifts — there is no backend required to run the app locally.
+## Main Features
 
-## Notes about the code
+- View all employees and their details
+- Create and edit staff profiles  
+- Assign shifts (Day, Night, On-Call)
+- Automatic schedule rules (On-Call shifts affect next day schedules)
+- Mobile-friendly design
 
-- The schedule logic lives in `src/hooks/useScheduleStore.js`. It implements a small business rule: when an `ON_CALL` shift is added, the next day's `DAY_SHIFT` (if any) is converted into a `POST_CALL_REST` (or one is created if none exists). Deleting an `ON_CALL` will revert that `POST_CALL_REST` back to a default `DAY_SHIFT` where applicable.
-
-- Visible UI text and internal comments have been converted to concise English to make the code easier to read and maintain.
-
-## Linting
-
-This project includes a basic ESLint setup. Run:
+## Build Commands
 
 ```bash
-npm run lint
+npm run dev      # Development server
+npm run build    # Production build
+npm run preview  # Preview production build
+npm run lint     # Check code quality
 ```
 
-Fixes may be manual. If you'd like, I can run ESLint and apply automatic fixes where safe.
+## Project Structure
 
-## Build & Deployment
-
-For a simple static deployment (Netlify, Vercel, GitHub Pages with an adapter, etc.), run:
-
-```bash
-npm run build
+```
+src/
+├── assets/         # pictures
+├── components/     # React components
+├── hooks/          # Custom hooks for data
+└── styles/         # CSS files
 ```
 
-Then upload the contents of the `dist/` directory to your static host. If you want a server preview locally, use:
+The app stores everything locally in your browser - no backend needed.
 
-```bash
-npm run preview
-```
+## About the Code
 
-## Development tips
+The schedule logic handles shift rules automatically. For example, when someone works an On-Call shift, the next day's schedule adjusts accordingly. All data persists in localStorage.
 
-- The app persists data in `localStorage`. To reset sample data while developing, clear the site data from your browser or open the devtools and remove the keys used by the app.
-
-- The UI is intentionally small and easy to modify. If you add new features that change the data shape (for example, additional shift properties), consider adding tests for `useScheduleStore` to protect the business rules.
-
+Built with React, Vite, and modern CSS.

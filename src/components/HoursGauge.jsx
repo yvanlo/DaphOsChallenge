@@ -19,39 +19,56 @@ export function HoursGauge({ minutes = 0 }) {
 
   return (
     <div className="hours-gauge">
-      <svg width={size} height={size} className="gauge-svg">
-        <defs>
-          <linearGradient id="gaugeGrad" x1="0%" x2="100%">
-            <stop offset="0%" stopColor={color} stopOpacity="0.9" />
-            <stop offset="100%" stopColor={color} stopOpacity="0.6" />
-          </linearGradient>
-        </defs>
+      <div className="gauge-container">
+        <svg width={size} height={size} className="gauge-svg">
+          <defs>
+            <linearGradient id="gaugeGrad" x1="0%" x2="100%">
+              <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+              <stop offset="100%" stopColor={color} stopOpacity="0.6" />
+            </linearGradient>
+          </defs>
 
-        <g transform={`translate(${size/2}, ${size/2})`}>
-          <circle
-            r={radius}
-            stroke="#e6edf7"
-            strokeWidth={stroke}
-            fill="none"
-            className="gauge-track"
-          />
+          <g transform={`translate(${size/2}, ${size/2})`}>
+            <circle
+              r={radius}
+              stroke="#e6edf7"
+              strokeWidth={stroke}
+              fill="none"
+              className="gauge-track"
+            />
 
-          <circle
-            r={radius}
-            stroke="url(#gaugeGrad)"
-            strokeWidth={stroke}
-            strokeLinecap="round"
-            fill="none"
-            strokeDasharray={dash}
-            transform={`rotate(-90)`}
-            className="gauge-progress"
-          />
-        </g>
-      </svg>
+            <circle
+              r={radius}
+              stroke="url(#gaugeGrad)"
+              strokeWidth={stroke}
+              strokeLinecap="round"
+              fill="none"
+              strokeDasharray={dash}
+              transform={`rotate(-90)`}
+              className="gauge-progress"
+            />
 
-      <div className="hours-value" style={{ color }}>
-        <div className="hours-number">{hoursInt}h {String(minutesRem).padStart(2, '0')}m</div>
-        <div className="hours-label">Weekly total</div>
+            {/* Text inside circle */}
+            <text
+              x="0"
+              y="-8"
+              textAnchor="middle"
+              className="gauge-text-value"
+              style={{ fill: color, fontSize: '18px', fontWeight: '800' }}
+            >
+              {hoursInt}h {String(minutesRem).padStart(2, '0')}m
+            </text>
+            <text
+              x="0"
+              y="12"
+              textAnchor="middle"
+              className="gauge-text-label"
+              style={{ fill: '#94a3b8', fontSize: '11px' }}
+            >
+              Weekly
+            </text>
+          </g>
+        </svg>
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ const getShiftsFromStorage = () => {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];
-  } catch (error) { return []; }
+  } catch { return []; }
 };
 
 // Find the next day's DAY_SHIFT for the same employee (used by business logic)
@@ -150,7 +150,7 @@ export function useScheduleStore() {
     // Notify other parts of the app that shifts changed (for components that don't share hook instance)
     try {
       window.dispatchEvent(new CustomEvent('shiftsUpdated'));
-    } catch (e) {
+    } catch {
       // ignore if not available (SSR)
     }
   }, [allShifts]);
@@ -322,7 +322,7 @@ export const computeWeeklyMinutes = (employeeId) => {
         if (end <= start) end += 24 * 60; // handle overnight
         return sum + Math.max(0, end - start);
       }, 0);
-  } catch (e) {
+  } catch {
     return 0;
   }
 };

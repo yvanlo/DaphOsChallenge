@@ -63,7 +63,7 @@ function App() {
 
   // schedule store helper to compute weekly minutes (we use storage-based helper so the gauge updates
   // even if other components use separate hook instances)
-  const store = useScheduleStore();
+  useScheduleStore();
 
   const handleEditEmployeeRequest = (employee) => {
     setSelectedEmployee(employee);
@@ -96,7 +96,10 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>DaphOS - Staff Management</h1>
+        <div className="header-content">
+          <h1>DaphOS</h1>
+          <p className="header-subtitle">Smart Staff Management & Scheduling</p>
+        </div>
       </header>
 
       <main className="main-content">

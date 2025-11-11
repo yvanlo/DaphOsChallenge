@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { SHIFT_TYPES, DEFAULT_HOURS } from '../hooks/useScheduleStore';
 
 export function ScheduleForm({ initialData, onSubmit, onCancel, dayHasPostCallRest }) {
@@ -65,18 +66,21 @@ export function ScheduleForm({ initialData, onSubmit, onCancel, dayHasPostCallRe
     ? { MEETING: SHIFT_TYPES.MEETING }
     : SHIFT_TYPES;
 
-  return (
+  // Render modal via portal to avoid being clipped by transformed ancestors
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <div className="modal-overlay" onClick={onCancel}>
       <div className="modal-content" onClick={e => e.stopPropagation()}>
         <form onSubmit={handleSubmit}>
           <h3>{isEditing ? 'Edit shift' : 'Add shift'}</h3>
-          
+
           {dayHasPostCallRest && (
             <div style={{ background: '#fef3c7', padding: '10px', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.9rem', color: '#92400e' }}>
               ⚠️ Post-call rest on this day — only meetings allowed
             </div>
           )}
-          
+
           <div className="form-group">
             <label htmlFor="type">Shift type</label>
             <select name="type" id="type" value={formData.type} onChange={handleTypeChange}>
@@ -85,7 +89,7 @@ export function ScheduleForm({ initialData, onSubmit, onCancel, dayHasPostCallRe
               ))}
             </select>
           </div>
-          
+
           {/* Do not show times for post-call rest */}
           {formData.type !== 'POST_CALL_REST' && (
             <>
@@ -99,7 +103,7 @@ export function ScheduleForm({ initialData, onSubmit, onCancel, dayHasPostCallRe
                   onChange={handleTimeChange}
                 />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="end">End (manual)</label>
                 <input
@@ -119,6 +123,7 @@ export function ScheduleForm({ initialData, onSubmit, onCancel, dayHasPostCallRe
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

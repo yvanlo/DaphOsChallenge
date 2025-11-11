@@ -458,17 +458,21 @@ button {
 
 /* Modal */
 .modal-overlay {
+  /* Ensure modal overlay covers the viewport and centers the dialog reliably.
+     Use inset:0 which is more robust, and very high z-index to avoid stacking issues.
+     Some browsers can treat fixed positioning relative to transformed ancestors;
+     inset:0 + high z-index helps ensure centering. */
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.3);
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.32);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
+  z-index: 9999; /* bring on top */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   animation: fadeIn var(--transition-fast);
 }
 
@@ -551,9 +555,22 @@ button {
 }
 
 /* Responsive */
-@media (max-width: 720px) {
+/* Responsive breakpoints: adapt layout for tablet and mobile */
+@media (max-width: 900px) {
   .main-content { grid-template-columns: 1fr; }
+  .left-panel { order: 2; }
+  .right-panel { order: 1; }
   .hours-gauge { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .main-content { padding: 0 0.75rem 1.25rem 0.75rem; }
+  .day-card { min-height: 120px; padding: 0.75rem; }
+  .day-header { font-size: 0.95rem; }
+  .employee-list-item { padding: 0.75rem; }
+  .modal-content { width: calc(100% - 32px); max-width: calc(100% - 32px); }
+  .form-group input, .form-group select { font-size: 0.95rem; }
+  .add-shift-btn { padding: 0.6rem; }
 }
 
 * { box-sizing: border-box; }
@@ -998,15 +1015,16 @@ button {
 }
 
 .modal-content {
-  background: var(--surface-1);
-  border: 1px solid var(--glass-border);
-  padding: 1.5rem;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  z-index: 1001;
-  width: 92%;
-  max-width: 460px;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 18px 60px rgba(2,6,23,0.06);
+  z-index: 10001;
+  width: min(92%, 560px);
+  max-width: 560px;
   animation: slideUp var(--transition-fast);
+  margin: 0 12px; /* small side margin on very small screens */
 }
 
 @keyframes slideUp {

@@ -5,6 +5,8 @@ import { EmployeeForm } from './components/EmployeeForm';
 import { ScheduleCalendar } from './components/ScheduleCalendar';
 import HoursGauge from './components/HoursGauge';
 import { useScheduleStore, computeWeeklyMinutes } from './hooks/useScheduleStore';
+import { Sidebar, SidebarBody, SidebarLink } from './components/ui/sidebar';
+import { UserPlus, Users } from 'lucide-react';
 import './styles/App.css';
 
 function App() {
@@ -12,7 +14,8 @@ function App() {
   const { employees, addEmployee, updateEmployee, deactivateEmployee, reactivateEmployee, removeEmployee } = useEmployeeStore();
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [editingEmployee, setEditingEmployee] = useState(null);
-  const [showAddForm, setShowAddForm] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleEmployeeFormSubmit = (formData) => {
     if (editingEmployee) {
@@ -93,101 +96,125 @@ function App() {
     setEditingEmployee(null);
   };
 
-  return (
-    <div className="app-container">
-      <header className="app-header">
-        <div className="header-content">
-          <h1>DaphOS</h1>
-          <p className="header-subtitle">Smart Staff Management & Scheduling</p>
-        </div>
-      </header>
+  const sidebarLinks = [
+    {
+      label: "Add Employee",
+      href: "#",
+      icon: <UserPlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+      onClick: () => {
+        setShowAddForm(true);
+        setSelectedEmployee(null);
+        setSidebarOpen(false);
+      }
+    },
+    {
+      label: "Employees",
+      href: "#",
+      icon: <Users className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+      onClick: () => {
+        setShowAddForm(false);
+        setSidebarOpen(false);
+      }
+    }
+  ];
 
-      <main className="main-content">
-        
-  {/* Left column */}
-        <div className="left-panel">
-          <div className="add-employee-panel">
+  return (
+    <div className="flex h-screen bg-gray-100 dark:bg-neutral-800">
+      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen}>
+        <SidebarBody className="justify-between gap-10">
+          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            <div className="flex flex-col gap-2 mt-8">
+              {sidebarLinks.map((link, idx) => (
+                <SidebarLink key={idx} link={link} onClick={link.onClick} />
+              ))}
+            </div>
+          </div>
+        </SidebarBody>
+      </Sidebar>
+
+      <div className="flex-1 flex flex-col">
+        <header className="app-header">
+          <div className="header-content">
+            <h1>DaphOS</h1>
+            <p className="header-subtitle">Smart Staff Management & Scheduling</p>
+          </div>
+        </header>
+
+        <main className="flex-1 p-6 overflow-auto">
+          <div className="max-w-7xl mx-auto">
             {showAddForm ? (
               <div className="form-container">
                 <EmployeeForm
                   initialData={null}
                   onSubmit={handleEmployeeFormSubmit}
-                  onCancel={() => setShowAddForm(false)}
+                  onCancel={() => { setShowAddForm(false); setSidebarOpen(false); }}
                 />
               </div>
             ) : (
-              <div className="add-employee-collapsed">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <strong>New employee</strong>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>Quick add</div>
-                  </div>
-                  <div>
-                    <button className="toggle-add-btn" onClick={() => { setShowAddForm(true); setSelectedEmployee(null); }}>Add</button>
-                  </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Left column */}
+                <div className="lg:col-span-1">
+                  <EmployeeList
+                    employees={employees}
+                    onSelect={handleSelectEmployee}
+                    onEdit={handleEditEmployeeRequest}
+                    onDeactivate={handleDeactivateEmployee}
+                    onReactivate={handleReactivateEmployee}
+                    onDelete={handleDeleteEmployee}
+                    selectedId={selectedEmployee ? selectedEmployee.id : null}
+                  />
+                </div>
+
+                {/* Right column */}
+                <div className="lg:col-span-2">
+                  {selectedEmployee ? (
+                    <>
+                      {/* Employee header + optional edit form */}
+                      <div className="form-container mb-6">
+                        {editingEmployee ? (
+                          <EmployeeForm
+                            initialData={editingEmployee}
+                            onSubmit={handleEmployeeFormSubmit}
+                            onCancel={handleCancelEditEmployee}
+                          />
+                        ) : (
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div>
+                              <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>{selectedEmployee.name}</h3>
+                              <div style={{ color: 'var(--muted)' }}>{selectedEmployee.role} • {selectedEmployee.status}</div>
+                            </div>
+                            <div>
+                              <button className="btn-secondary" onClick={() => setEditingEmployee(selectedEmployee)}>Edit</button>
+                              <button className="btn-danger" style={{ marginLeft: '8px' }} onClick={() => handleDeactivateEmployee(selectedEmployee.id)}>Deactivate</button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <hr className="section-divider" />
+
+                      {/* Section: Schedule */}
+                      <ScheduleCalendar
+                        key={selectedEmployee.id} // force component reset when selected employee changes
+                        employeeId={selectedEmployee.id}
+                      />
+
+                      {/* Weekly hours gauge */}
+                      <div style={{ marginTop: '1.5rem' }}>
+                        <HoursGauge minutes={weeklyMinutes} />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="placeholder-text">
+                      <p>Select an employee to view details and manage their schedule.</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
           </div>
-
-          <EmployeeList
-            employees={employees}
-            onSelect={handleSelectEmployee}
-            onEdit={handleEditEmployeeRequest}
-            onDeactivate={handleDeactivateEmployee}
-            onReactivate={handleReactivateEmployee}
-            onDelete={handleDeleteEmployee}
-            selectedId={selectedEmployee ? selectedEmployee.id : null}
-          />
-        </div>
-
-        {/* Right column */}
-        <div className="right-panel">
-          {selectedEmployee ? (
-            <>
-              {/* Employee header + optional edit form */}
-              <div className="form-container">
-                {editingEmployee ? (
-                  <EmployeeForm
-                    initialData={editingEmployee}
-                    onSubmit={handleEmployeeFormSubmit}
-                    onCancel={handleCancelEditEmployee}
-                  />
-                ) : (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>{selectedEmployee.name}</h3>
-                      <div style={{ color: 'var(--muted)' }}>{selectedEmployee.role} • {selectedEmployee.status}</div>
-                    </div>
-                    <div>
-                      <button className="btn-secondary" onClick={() => setEditingEmployee(selectedEmployee)}>Edit</button>
-                      <button className="btn-danger" style={{ marginLeft: '8px' }} onClick={() => handleDeactivateEmployee(selectedEmployee.id)}>Deactivate</button>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <hr className="section-divider" />
-
-              {/* Section: Schedule */}
-              <ScheduleCalendar 
-                key={selectedEmployee.id} // force component reset when selected employee changes
-                employeeId={selectedEmployee.id} 
-              />
-
-              {/* Weekly hours gauge */}
-              <div style={{ marginTop: '1.5rem' }}>
-                <HoursGauge minutes={weeklyMinutes} />
-              </div>
-            </>
-          ) : (
-            <div className="placeholder-text">
-              <p>Select an employee to view details and manage their schedule.</p>
-            </div>
-          )}
-        </div>
-
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

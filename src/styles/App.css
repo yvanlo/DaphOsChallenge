@@ -182,12 +182,12 @@ button {
 
 .btn-secondary {
   background: var(--surface-2);
-  color: var(--accent);
+  color: white;
   border: 1px solid rgba(37,99,235,0.2);
 }
 
 .btn-secondary:hover {
-  background: var(--surface-elevated);
+  background: #1e40af;
   border-color: rgba(37,99,235,0.4);
   transform: translateY(-1px);
 }
@@ -361,7 +361,7 @@ button {
 
 .day-card {
   border-radius: var(--radius-lg);
-  background: var(--surface-2);
+  background: #1e40af;
   border: 1px solid var(--glass-border);
   padding: 1rem;
   display: flex;
@@ -372,7 +372,7 @@ button {
 }
 
 .day-card:hover {
-  background: var(--surface-elevated);
+  background: #1e40af;
   border-color: rgba(37,99,235,0.2);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
@@ -465,7 +465,7 @@ button {
   width: 100%;
   padding: 0.75rem;
   border-radius: 10px;
-  background: var(--surface-elevated);
+  background: #1e40af;
   border: 1px solid rgba(37,99,235,0.2);
   color: var(--accent);
   font-weight: 600;
@@ -772,7 +772,7 @@ button {
 
 .btn-primary {
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: white;
+  /*color: white;*/
   box-shadow: 0 4px 15px rgba(96,165,250,0.3);
 }
 
@@ -785,15 +785,16 @@ button {
 .btn-primary:active { transform: translateY(0); }
 
 .btn-secondary {
-  background: var(--glass-bg);
-  color: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  /*color: white;*/
   border: 1px solid rgba(96,165,250,0.2);
+  box-shadow: 0 4px 15px rgba(96,165,250,0.3);
 }
 
 .btn-secondary:hover {
-  background: rgba(96,165,250,0.1);
-  border-color: rgba(96,165,250,0.4);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, var(--accent-hover), var(--accent));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(96,165,250,0.4);
 }
 
 .btn-danger {
@@ -809,7 +810,7 @@ button {
 
 .toggle-add-btn {
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: white;
+  /*color: white;*/
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -855,7 +856,7 @@ button {
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  background: var(--surface-elevated);
+  background: #1e40af;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(96,165,250,0.1);
 }

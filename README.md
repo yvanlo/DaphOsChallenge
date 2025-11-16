@@ -3,6 +3,7 @@
 
 A React app for managing hospital staff schedules. Add employees, assign shifts, and track weekly schedules. Built for the DaphOS coding challenge.
 
+![Preview](readme-assets/Screenshot.png)
 ## Quick Start
 
 Make sure you have Node.js installed, then:
